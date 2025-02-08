@@ -38,9 +38,6 @@ jobs:
         # Move application files to the correct location
         sudo mv app/src/* .
 
-        # Move the correct database file (`slt_clothing.sql`)
-        sudo mv app/src/slt_clothing.sql .  # ✅ Ensures database file is copied correctly
-
         # Remove temporary folder
         sudo rm -rf app
 
@@ -54,8 +51,8 @@ jobs:
         sudo yum install -y mariadb105  # ✅ Install MySQL client before running import
 
         # Ensure Database Exists
-        mysql -h slt-clothing-database.c0z404e2a7r7.us-east-1.rds.amazonaws.com -u admin -psltclothing12345 -e "CREATE DATABASE IF NOT EXISTS slt_clothing;"
+        mysql -h slt-clothing-database.c0z404e2a7r7.us-east-1.rds.amazonaws.com -u admin -psltclothing12345 -e "CREATE DATABASE IF NOT EXISTS slt_clothing_database;"
 
         # Import Database Schema
-        mysql -h slt-clothing-database.c0z404e2a7r7.us-east-1.rds.amazonaws.com -u admin -psltclothing12345 slt_clothing < /var/www/html/slt_clothing.sql
+        mysql -h slt-clothing-database.c0z404e2a7r7.us-east-1.rds.amazonaws.com -u admin -psltclothing12345 slt_clothing_database < /var/www/html/slt_clothing.sql
         EOF
