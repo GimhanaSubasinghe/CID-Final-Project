@@ -39,7 +39,7 @@ jobs:
         sudo mv app/src/* .
 
         # Move the correct database file (`slt_clothing.sql`)
-        sudo mv app/slt_clothing.sql .  # ✅ Ensures database file is copied correctly
+        sudo mv app/src/slt_clothing.sql .  # ✅ Ensures database file is copied correctly
 
         # Remove temporary folder
         sudo rm -rf app
