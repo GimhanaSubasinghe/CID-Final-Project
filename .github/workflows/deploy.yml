@@ -1,0 +1,61 @@
+name: Deploy PHP App to AWS EC2
+
+on:
+  push:
+    branches:
+    - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Install SSH Key
+      uses: webfactory/ssh-agent@v0.5.4
+      with:
+        ssh-private-key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+
+    - name: Deploy PHP App to EC2
+      run: |
+        ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_PUBLIC_IP }} << 'EOF'
+        sudo yum update -y
+        sudo yum install -y httpd php php-mysqli git mariadb105  # ✅ Correct MySQL client for Amazon Linux 2023
+
+        # Start and enable Apache
+        sudo systemctl start httpd
+        sudo systemctl enable httpd
+
+        # Navigate to Apache directory and clean up old files
+        cd /var/www/html
+        sudo rm -rf *
+
+        # Clone latest code from GitHub
+        sudo git clone https://github.com/GimhanaSubasinghe/CID-Final-Project.git app
+
+        # Move application files to the correct location
+        sudo mv app/src/* .
+
+        # Move the correct database file (`slt_clothing.sql`)
+        sudo mv app/slt_clothing.sql .  # ✅ Ensures database file is copied correctly
+
+        # Remove temporary folder
+        sudo rm -rf app
+
+        # Restart Apache to apply changes
+        sudo systemctl restart httpd
+        EOF
+
+    - name: Import Database
+      run: |
+        ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_PUBLIC_IP }} << 'EOF'
+        sudo yum install -y mariadb105  # ✅ Install MySQL client before running import
+
+        # Ensure Database Exists
+        mysql -h slt-clothing-database.c0z404e2a7r7.us-east-1.rds.amazonaws.com -u admin -psltclothing12345 -e "CREATE DATABASE IF NOT EXISTS slt_clothing;"
+
+        # Import Database Schema
+        mysql -h slt-clothing-database.c0z404e2a7r7.us-east-1.rds.amazonaws.com -u admin -psltclothing12345 slt_clothing < /var/www/html/slt_clothing.sql
+        EOF
