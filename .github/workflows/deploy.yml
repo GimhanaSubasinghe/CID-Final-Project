@@ -51,8 +51,8 @@ jobs:
         sudo yum install -y mariadb105  # ✅ Install MySQL client before running import
 
         # Ensure Database Exists
-        mysql -h sltclothing.c0z404e2a7r7.us-east-1.rds.amazonaws.com -u admin -psltclothing12345 -e "CREATE DATABASE IF NOT EXISTS sltclothing;"
+        mysql -h database-1.c0z404e2a7r7.us-east-1.rds.amazonaws.com -u admin -psltclothing12345 -e "CREATE DATABASE IF NOT EXISTS database-1;"
 
         # Import Database Schema
-        mysql -h sltclothing.c0z404e2a7r7.us-east-1.rds.amazonaws.com -u admin -psltclothing12345 sltclothing < /var/www/html/slt_clothing.sql
+        mysql -h database-1.c0z404e2a7r7.us-east-1.rds.amazonaws.com -u admin -psltclothing12345 database-1 < /var/www/html/slt_clothing.sql
         EOF
