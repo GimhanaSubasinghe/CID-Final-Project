@@ -70,7 +70,7 @@
     <!-- Copyright -->
     <div class="text-center p-3 border-top border-dark">
       © 2025 Copyright:
-      <a class="text-dark">SLT Clothing</a>
+      <a class="text-dark">SLTC</a>
     </div>
     <!-- Copyright -->
   </footer>
