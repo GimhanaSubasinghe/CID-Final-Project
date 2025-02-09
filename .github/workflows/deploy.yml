@@ -53,6 +53,6 @@ jobs:
         # Ensure Database Exists
         mysql -h sltclothing.c0z404e2a7r7.us-east-1.rds.amazonaws.com -u admin -psltclothing12345 -e "CREATE DATABASE IF NOT EXISTS sltclothing;"
 
-        # Import Database Schema
-        mysql -h sltclothing.c0z404e2a7r7.us-east-1.rds.amazonaws.com -u admin -psltclothing12345 sltclothing < /var/www/html/slt_clothing.sql
+         # Import Database Schema (with --force)
+        mysql -h sltclothing.c0z404e2a7r7.us-east-1.rds.amazonaws.com -u admin -psltclothing12345 sltclothing --force < /var/www/html/slt_clothing.sql
         EOF
